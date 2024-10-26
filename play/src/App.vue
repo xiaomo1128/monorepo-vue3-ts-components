@@ -6,9 +6,9 @@ console.log(Icon);
 </script>
 
 <template>
-  <div>
-    测试
-  </div>
+  <z-icon :color="'red'" :size="20">
+    world
+  </z-icon>
 </template>
 
 <style scoped>
