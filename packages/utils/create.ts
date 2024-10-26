@@ -2,7 +2,7 @@
  * @Author: xiaomo1128 493559026@qq.com
  * @Date: 2024-10-23 08:58:16
  * @LastEditors: xiaomo1128 493559026@qq.com
- * @LastEditTime: 2024-10-26 21:46:00
+ * @LastEditTime: 2024-10-26 21:51:06
  * @FilePath: \monorepo-demo\packages\utils\create.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -65,16 +65,16 @@ function createBEM(prefixName: string) {
   };
 }
 
-function createNamespace(name: string) {
+export function createNamespace(name: string) {
   const prefixName = `z-${name}`;
   return createBEM(prefixName);
 }
 
-const bem = createNamespace("icon");
-console.log(bem.b("box"));
-console.log(bem.e('element'));
-console.log(bem.m('modifier'));
-console.log(bem.bem('box', 'element','modifier'));
-console.log(bem.is('active', true));
+// const bem = createNamespace("icon");
+// console.log(bem.b("box"));
+// console.log(bem.e('element'));
+// console.log(bem.m('modifier'));
+// console.log(bem.bem('box', 'element','modifier'));
+// console.log(bem.is('active', true));
 
 
