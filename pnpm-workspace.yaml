@@ -1,0 +1,4 @@
+packages:
+  - "packages/*"   # 匹配所有 packages 目录下所有子目录
+  - play # 存放组件测试代码
+  - docs/*        # 匹配所有 docs 目录下所有子目录 组件文档
