@@ -17,6 +17,7 @@
     "vue": "^3.5.12"
   },
   "devDependencies": {
+    "sass": "^1.80.4",
     "unplugin-vue-define-options": "^1.5.2"
   }
 }
