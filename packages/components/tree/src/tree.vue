@@ -1,7 +1,7 @@
 <template>
   <div :class="bem.b()">
     <!-- 若自定义性强，采用tsx编写 -->
-    <ZTreeNode v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)"></ZTreeNode>
+    <ZTreeNode v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)" @toggle="toggleExpand"></ZTreeNode>
   </div>
 </template>
 
@@ -111,5 +111,24 @@ const flattenTree = computed(() => {
 function isExpanded(node: TreeNode): boolean {
   return expandedKeysSet.value.has(node.key)
 }
+
+function collapse(node: TreeNode) {
+  expandedKeysSet.value.delete(node.key)
+}
+
+function expand(node: TreeNode) {
+  expandedKeysSet.value.add(node.key)
+}
+
+function toggleExpand(node: TreeNode) {
+  const expandKeys = expandedKeysSet.value
+  if (expandKeys.has(node.key)) {
+    collapse(node)
+  } else {
+    expand(node)
+  }
+}
+
+
 
 </script>
