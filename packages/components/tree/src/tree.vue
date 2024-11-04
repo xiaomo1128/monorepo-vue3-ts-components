@@ -1,12 +1,17 @@
 <template>
-  <div>
-    tree
+  <div :class="bem.b()">
+    <!-- 若自定义性强，采用tsx编写 -->
+    <ZTreeNode v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)"></ZTreeNode>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { TreeNode, TreeOption, treeProps } from './tree';
+import { createNamespace } from '@zi-shui/utils/create';
+import ZTreeNode from './treeNode.vue'
+
+const bem = createNamespace('tree');
 
 defineOptions({
   name: 'z-tree'
@@ -102,6 +107,9 @@ const flattenTree = computed(() => {
 
   return flattenNodes
 })
-console.log(flattenTree.value);
+
+function isExpanded(node: TreeNode): boolean {
+  return expandedKeysSet.value.has(node.key)
+}
 
 </script>
