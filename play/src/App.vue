@@ -51,6 +51,7 @@ const data = ref(createData())
     label-field="xx"
     key-field="key"
     children-field="children"
+    :default-expanded-keys="[ '41']"
   ></z-tree>
 </template>
 

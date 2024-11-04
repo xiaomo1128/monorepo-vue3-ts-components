@@ -18,7 +18,7 @@ const props = defineProps(treeProps)
 
 const tree = ref<TreeNode[]>([])
 
-function createOptions(key: string, label: string, children:string) {
+function createOptions(key: string, label: string, children: string) {
   return {
     getKey(node: TreeOption) {
       return node[key] as string
@@ -35,7 +35,6 @@ function createOptions(key: string, label: string, children:string) {
 const treeOptions = createOptions(props.keyField, props.labelField, props.childrenField)
 
 function createTree(data: TreeOption[]) {
-  console.log('createTree', data);
   function traversal(data: TreeOption[], parent: TreeNode | null = null) {
     return data.map((node) => {
       let children = treeOptions.getChildren(node) || []
@@ -47,7 +46,7 @@ function createTree(data: TreeOption[]) {
         level: parent ? parent.level + 1 : 0,
         isLeaf: node.isLeaf ?? children.length === 0,// 是否叶子节点
       }
-      if (children.length > 0) {  
+      if (children.length > 0) {
         // 子级有数据，将其格式化为treeNode
         treeNode.children = traversal(children, treeNode)
       }
@@ -64,12 +63,45 @@ watch(
   (data: TreeOption[]) => {
     if (data) {
       tree.value = createTree(data)
-      console.log('树形数据',tree.value);
-      
     }
   },
   {
     immediate: true
   }
 )
+
+// 平铺，点击展开
+const expandedKeysSet = ref(new Set(props.defaultExpandedKeys))
+
+const flattenTree = computed(() => {
+  let expandedKeys = expandedKeysSet.value // 要展开的节点
+
+  let flattenNodes: TreeNode[] = [] // 平铺后的节点
+
+  const nodes = tree.value || []// 格式化后的树形数据
+
+  const stack: TreeNode[] = [] // 栈
+
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    stack.push(nodes[i])
+  }
+  // 深度遍历
+  while (stack.length) {
+    const node = stack.pop()
+    if (!node) continue
+    flattenNodes.push(node)
+    if (expandedKeys.has(node.key)) {
+      const children = node.children || []
+      if (children) {
+        for (let i = node.children.length - 1; i >= 0; i--) {
+          stack.push(node.children[i])
+        }
+      }
+    }
+  }
+
+  return flattenNodes
+})
+console.log(flattenTree.value);
+
 </script>
