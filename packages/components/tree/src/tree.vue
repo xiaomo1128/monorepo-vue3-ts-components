@@ -1,13 +1,13 @@
 <template>
   <div :class="bem.b()">
     <!-- 若自定义性强，采用tsx编写 -->
-    <ZTreeNode v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)" @toggle="toggleExpand"></ZTreeNode>
+    <ZTreeNode v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)" :loadingKeys="loadingKeysRef" @toggle="toggleExpand"></ZTreeNode>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { TreeNode, TreeOption, treeProps } from './tree';
+import { Key, TreeNode, TreeOption, treeProps } from './tree';
 import { createNamespace } from '@zi-shui/utils/create';
 import ZTreeNode from './treeNode.vue'
 
@@ -23,6 +23,7 @@ const props = defineProps(treeProps)
 
 const tree = ref<TreeNode[]>([])
 
+// 获取对应字段
 function createOptions(key: string, label: string, children: string) {
   return {
     getKey(node: TreeOption) {
@@ -39,7 +40,8 @@ function createOptions(key: string, label: string, children: string) {
 
 const treeOptions = createOptions(props.keyField, props.labelField, props.childrenField)
 
-function createTree(data: TreeOption[]) {
+// 格式化数据
+function createTree(data: TreeOption[], parent: TreeNode | null = null) {
   function traversal(data: TreeOption[], parent: TreeNode | null = null) {
     return data.map((node) => {
       let children = treeOptions.getChildren(node) || []
@@ -58,7 +60,7 @@ function createTree(data: TreeOption[]) {
       return treeNode
     })
   }
-  const result: TreeNode[] = traversal(data)
+  const result: TreeNode[] = traversal(data, parent)
   return result
 }
 
@@ -78,6 +80,7 @@ watch(
 // 平铺，点击展开
 const expandedKeysSet = ref(new Set(props.defaultExpandedKeys))
 
+// 将树形结构，平铺，展开的节点动态计算
 const flattenTree = computed(() => {
   let expandedKeys = expandedKeysSet.value // 要展开的节点
 
@@ -116,19 +119,45 @@ function collapse(node: TreeNode) {
   expandedKeysSet.value.delete(node.key)
 }
 
-function expand(node: TreeNode) {
-  expandedKeysSet.value.add(node.key)
+const loadingKeysRef = ref(new Set<Key>())
+
+function triggerLoading(node: TreeNode) {
+  // 该节点要异步加载
+  if (!node.children.length && !node.isLeaf) {
+    // 若没有加载过，则触发异步加载
+    let loadingKeys = loadingKeysRef.value
+    if (!loadingKeys.has(node.key)) {
+      loadingKeys.add(node.key)
+      const onLoad = props.onLoad
+      if (onLoad) {
+        onLoad(node.rawNode).then((children) => {
+          // 修改原来的节点
+          node.rawNode.children = children
+          // 更新自定义node
+          node.children = createTree(children, node)
+          loadingKeys.delete(node.key)
+        })
+      }
+    }
+  }
 }
 
+function expand(node: TreeNode) {
+  expandedKeysSet.value.add(node.key)
+
+  // 展示子节点处理逻辑
+  triggerLoading(node)
+}
+
+// 点击展开
 function toggleExpand(node: TreeNode) {
   const expandKeys = expandedKeysSet.value
-  if (expandKeys.has(node.key)) {
+  // 若当前节点
+  if (expandKeys.has(node.key) && !loadingKeysRef.value.has(node.key)) {
     collapse(node)
   } else {
     expand(node)
   }
 }
-
-
 
 </script>

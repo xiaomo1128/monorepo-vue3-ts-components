@@ -11,3 +11,5 @@ declare module 'vue' {
     ZTree: typeof Tree
   }
 }
+
+export * from './src/tree'
