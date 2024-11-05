@@ -1,6 +1,6 @@
 <template>
-    <div :class="bem.b()">
-        <div :class="bem.e('content')" :style="{ paddingLeft: `${node?.level as number * 16}px` }">
+    <div :class="[bem.b(), bem.is('selected', isSelected)]">
+        <div :class="[bem.e('content')]" :style="{ paddingLeft: `${node?.level as number * 16}px` }">
             <span
                 :class="[bem.e('expand-icon'), { expanded: expanded && !node?.isLeaf }, bem.is('leaf', node?.isLeaf as boolean)]"
                 @click="handleExpand">
@@ -9,9 +9,8 @@
                     <Loading v-else></Loading>
                 </ZIcon>
             </span>
-            <span>{{ node?.label }}</span>
+            <span @click="handleSelected" :class="bem.e('label')">{{ node?.label }}</span>
         </div>
-
     </div>
 </template>
 
@@ -34,5 +33,15 @@ function handleExpand() {
 
 const isLoading = computed(() => {
     return props.loadingKeys?.has(props.node!.key)
-}) 
+})
+
+const isSelected = computed(() => {
+    return props.selectedKeys?.includes(props.node!.key)
+})
+
+function handleSelected() {
+    console.log('handleSelected');
+    
+    emit('select', props.node as TreeNode)
+}
 </script>

@@ -8,7 +8,7 @@
 -->
 <script setup lang="ts">
 import { AddCircle } from '@vicons/ionicons5'
-import { TreeOption } from '@zi-shui/components/tree';
+import { Key, TreeOption } from '@zi-shui/components/tree';
 import { ref } from 'vue'
 // import Icon from '@zi-shui/components/icon/src/icon.vue'
 
@@ -21,32 +21,32 @@ function createLabel(level: number): string {
   return ''
 }
 
-// function createData(level = 4, parentKey = ''): any {
-//   if (!level) return []
-//   const arr = new Array(20 - level).fill(0)
-//   return arr.map((_, idx: number) => {
-//     const key = parentKey + level + idx
-//     return {
-//       xx: createLabel(level), // 显示的内容
-//       key, // 为了唯一性
-//       children: createData(level - 1, key) // 孩子
-//     }
-//   })
-// }
-
-function createData() {
-  return [
-    {
-      label: nextLabel(),
-      key: 1,
-      isLeaf: false, // 动态加载子节点
-    }, {
-      label: nextLabel(),
-      key: 2,
-      isLeaf: false,
+function createData(level = 4, parentKey = ''): any {
+  if (!level) return []
+  const arr = new Array(20 - level).fill(0)
+  return arr.map((_, idx: number) => {
+    const key = parentKey + level + idx
+    return {
+      label: createLabel(level), // 显示的内容
+      key, // 为了唯一性
+      children: createData(level - 1, key) // 孩子
     }
-  ]
+  })
 }
+
+// function createData() {
+//   return [
+//     {
+//       label: nextLabel(),
+//       key: 1,
+//       isLeaf: false, // 动态加载子节点
+//     }, {
+//       label: nextLabel(),
+//       key: 2,
+//       isLeaf: false,
+//     }
+//   ]
+// }
 
 function nextLabel(currentLabel?: string | undefined | number): string {
   if (!currentLabel) return 'Out of Tao, One is born'
@@ -63,12 +63,12 @@ function nextLabel(currentLabel?: string | undefined | number): string {
 
 const data = ref(createData())
 
-function handleLoad(node: TreeOption) { 
+function handleLoad(node: TreeOption) {
   // 异步加载子节点
   return new Promise<TreeOption[]>((resolve) => {
     setTimeout(() => {
       resolve([ // 当前展开node的children属性 
-        { 
+        {
           label: nextLabel(node.label),
           key: node.key + nextLabel(node.label),
           isLeaf: false, // 动态加载子节点
@@ -77,6 +77,8 @@ function handleLoad(node: TreeOption) {
     }, 1000);
   })
 }
+
+const value = ref<Key[]>(['40', '41'])
 </script>
 
 <template>
@@ -88,8 +90,12 @@ function handleLoad(node: TreeOption) {
     <AddCircle></AddCircle>
   </z-icon>
 
-  <!-- 传递一个树形结构 -->
-   <z-tree :data="data" :on-load="handleLoad"></z-tree>
+  <!-- 传递一个树形结构 
+    selectable 节点是否可选
+    multiple 节点是否可多选
+    selected-keys 选中的节点的key值
+  -->
+  <z-tree :data="data" :on-load="handleLoad" v-model:selected-keys="value" selectable multiple></z-tree>
   <!-- <z-tree :data="data" label-field="label" key-field="key" children-field="children"></z-tree> -->
 </template>
 

@@ -1,13 +1,15 @@
 <template>
   <div :class="bem.b()">
     <!-- 若自定义性强，采用tsx编写 -->
-    <ZTreeNode v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)" :loadingKeys="loadingKeysRef" @toggle="toggleExpand"></ZTreeNode>
+    <z-tree-node v-for="node in flattenTree" :key="node.key" :node="node" :expanded="isExpanded(node)"
+      :loadingKeys="loadingKeysRef" :selectedKeys="selectedKeysRef" @select="handleSelect"
+      @toggle="toggleExpand"></z-tree-node>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { Key, TreeNode, TreeOption, treeProps } from './tree';
+import { Key, TreeNode, TreeOption, treeEmits, treeProps } from './tree';
 import { createNamespace } from '@zi-shui/utils/create';
 import ZTreeNode from './treeNode.vue'
 
@@ -158,6 +160,50 @@ function toggleExpand(node: TreeNode) {
   } else {
     expand(node)
   }
+}
+
+// 选中节点
+const emit = defineEmits(treeEmits)
+
+const selectedKeysRef = ref<Key[]>([])
+
+watch(
+  () => props.selectedKeys,
+  value => {
+    if (value) {
+      selectedKeysRef.value = value
+    }
+  },
+  {
+    immediate: true
+  }
+)
+
+function handleSelect(node: TreeNode) {
+  let keys = Array.from(selectedKeysRef.value)
+
+  if (!props.selectable) return // 不可选
+
+  if (props.multiple) {
+    // 多选
+    // 取消选中
+    let index = keys.findIndex(k => k === node.key)
+    if (index !== -1) {
+      keys.splice(index, 1)
+    } else {
+      keys.push(node.key)
+    }
+  } else {
+    // 单选
+    if (keys.includes(node.key)) {
+      // 取消选中
+      keys = []
+    } else {
+      // 选中
+      keys = [node.key]
+    }
+  }
+  emit('update:selectedKeys', keys)
 }
 
 </script>
