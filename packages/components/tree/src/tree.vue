@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { Key, TreeNode, TreeOption, treeEmits, treeProps } from './tree';
+import { computed, provide, ref, useSlots, watch } from 'vue';
+import { Key, TreeNode, TreeOption, treeEmits, treeInjectKey, treeProps } from './tree';
 import { createNamespace } from '@zi-shui/utils/create';
 import ZTreeNode from './treeNode.vue'
 
@@ -53,7 +53,9 @@ function createTree(data: TreeOption[], parent: TreeNode | null = null) {
         children: [], //默认空数组
         rawNode: node,
         level: parent ? parent.level + 1 : 0,
-        isLeaf: node.isLeaf ?? children.length === 0,// 是否叶子节点
+        disabled: !!node.disabled, // 是否禁用
+        // 是否叶子节点,若没有则查看是否有children属性
+        isLeaf: node.isLeaf ?? children.length === 0,
       }
       if (children.length > 0) {
         // 子级有数据，将其格式化为treeNode
@@ -206,4 +208,7 @@ function handleSelect(node: TreeNode) {
   emit('update:selectedKeys', keys)
 }
 
+provide(treeInjectKey, {
+  slots: useSlots(),
+})
 </script>

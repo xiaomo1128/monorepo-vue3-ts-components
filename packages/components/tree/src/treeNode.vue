@@ -1,5 +1,5 @@
 <template>
-    <div :class="[bem.b(), bem.is('selected', isSelected)]">
+    <div :class="[bem.b(), bem.is('selected', isSelected), bem.is('disabled', node.disabled)]">
         <div :class="[bem.e('content')]" :style="{ paddingLeft: `${node?.level as number * 16}px` }">
             <span
                 :class="[bem.e('expand-icon'), { expanded: expanded && !node?.isLeaf }, bem.is('leaf', node?.isLeaf as boolean)]"
@@ -9,18 +9,21 @@
                     <Loading v-else></Loading>
                 </ZIcon>
             </span>
-            <span @click="handleSelected" :class="bem.e('label')">{{ node?.label }}</span>
+            <span @click="handleSelected" :class="bem.e('label')">
+                <ZTreeNodeContent :node="node"></ZTreeNodeContent>
+            </span>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { createNamespace } from '@zi-shui/utils/create';
-import { TreeNode, treeNodeEmits, treeNodeProps } from './tree';
+import { TreeNode, treeInjectKey, treeNodeEmits, treeNodeProps } from './tree';
 import Switcher from './icon/Switcher';
 import Loading from './icon/Loading';
 import ZIcon from '@zi-shui/components/icon';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
+import ZTreeNodeContent from './tree-node-content';
 
 const bem = createNamespace('tree-node')
 
@@ -40,8 +43,8 @@ const isSelected = computed(() => {
 })
 
 function handleSelected() {
-    console.log('handleSelected');
-    
+    if (props.node?.disabled) return
     emit('select', props.node as TreeNode)
 }
+
 </script>

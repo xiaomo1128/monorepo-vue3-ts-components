@@ -63,6 +63,34 @@ function nextLabel(currentLabel?: string | undefined | number): string {
 
 const data = ref(createData())
 
+// const data = ref<TreeOption[]>([
+//   {
+//     key: '0',
+//     label: '0',
+//     children: [
+//       {
+//         key: '0-0',
+//         label: '0-0'
+//       },
+//       {
+//         disabled: true,
+//         key: '0-1',
+//         label: '0-1',
+//         children: [
+//           {
+//             label: '0-1-0',
+//             key: '0-1-0'
+//           },
+//           {
+//             label: '0-1-1',
+//             key: '0-1-1'
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// ])
+
 function handleLoad(node: TreeOption) {
   // 异步加载子节点
   return new Promise<TreeOption[]>((resolve) => {
@@ -78,7 +106,7 @@ function handleLoad(node: TreeOption) {
   })
 }
 
-const value = ref<Key[]>(['40', '41'])
+const value = ref<Key[]>([])
 </script>
 
 <template>
@@ -95,7 +123,12 @@ const value = ref<Key[]>(['40', '41'])
     multiple 节点是否可多选
     selected-keys 选中的节点的key值
   -->
-  <z-tree :data="data" :on-load="handleLoad" v-model:selected-keys="value" selectable multiple></z-tree>
+  {{ value }}
+  <z-tree :data="data" :on-load="handleLoad" v-model:selected-keys="value" selectable>
+    <template #default="{ node }">
+      {{ node.key }} - {{ node.label }}
+    </template>
+  </z-tree>
   <!-- <z-tree :data="data" label-field="label" key-field="key" children-field="children"></z-tree> -->
 </template>
 

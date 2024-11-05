@@ -7,7 +7,7 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
-import { ExtractPropTypes, PropType } from 'vue'
+import { ExtractPropTypes, InjectionKey, PropType, SetupContext } from 'vue'
 
 export type Key = string | number
 
@@ -22,7 +22,8 @@ export interface TreeOption {
   label?: Key
   key?: Key
   children?: TreeOption[]
-  isLeaf: boolean
+  isLeaf?: boolean
+  disabled?: boolean
   [key: string]: unknown // 任意属性
 }
 
@@ -84,7 +85,7 @@ export const treeNodeProps = {
 
 export const treeNodeEmits = {
   toggle: (node: TreeNode) => node,
-  select: (node: TreeNode) => node,
+  select: (node: TreeNode) => node
 }
 
 export const treeEmits = {
@@ -93,3 +94,18 @@ export const treeEmits = {
 }
 
 export type TreeProps = Partial<ExtractPropTypes<typeof treeProps>>
+
+export interface TreeContext {
+  slots: SetupContext['slots']
+  // emit: SetupContext['emit']
+}
+
+// 该变量作为提供出去的属性
+export const treeInjectKey: InjectionKey<TreeContext> = Symbol()
+
+export const treeNodeContentProps = {
+  node: {
+    type: Object as PropType<TreeNode>,
+    required: true
+  }
+}
