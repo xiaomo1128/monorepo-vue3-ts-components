@@ -11,7 +11,8 @@
             </span>
 
             <!-- 多选框 -->
-            <z-checkbox v-if="showCheckbox" :model-value="checked" :disabled="disabled" :indeterminate="indeterminate"></z-checkbox>
+            <z-checkbox v-if="showCheckbox" :disabled="disabled" :model-value="checked" :indeterminate="indeterminate"
+                @change="handleCheckChange"></z-checkbox>
 
             <span @click="handleSelected" :class="bem.e('label')">
                 <ZTreeNodeContent :node="node"></ZTreeNodeContent>
@@ -52,4 +53,7 @@ function handleSelected() {
     emit('select', props.node as TreeNode)
 }
 
+function handleCheckChange(val: boolean) {
+    emit('check', props.node as TreeNode, val)
+}
 </script>
