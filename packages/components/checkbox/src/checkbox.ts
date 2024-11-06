@@ -17,8 +17,8 @@ export const checkboxProps = {
 export type CheckboxProps = Partial<ExtractPropTypes<typeof checkboxProps>>
 
 export const checkboxEmits = {
-  'update:modelValue': (value: boolean | string | number) => true,
-  change: (value: boolean | string | number) => true
+  'update:modelValue': (value: boolean | string | number) => typeof value === 'boolean',
+  change: (value: boolean | string | number) => typeof value === 'boolean'
 }
 
 export type CheckboxEmits = typeof checkboxEmits

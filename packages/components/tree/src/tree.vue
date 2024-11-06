@@ -4,7 +4,8 @@
     <z-virtual-list :items="flattenTree" :remain="8" :size="35">
       <template #default="{ node }">
         <z-tree-node :key="node.key" :node="node" :expanded="isExpanded(node)" :loadingKeys="loadingKeysRef"
-          :selectedKeys="selectedKeysRef" @select="handleSelect" @toggle="toggleExpand"></z-tree-node>
+          :selectedKeys="selectedKeysRef" @select="handleSelect" @toggle="toggleExpand" :show-checkbox="showCheckbox"
+          :checked="isChecked(node)" :disabled="isDisabled(node)" :Indeterminate="isIndeterminate(node)"></z-tree-node>
       </template>
     </z-virtual-list>
 
@@ -219,4 +220,19 @@ function handleSelect(node: TreeNode) {
 provide(treeInjectKey, {
   slots: useSlots(),
 })
+
+const checkedKeysRefs = ref(new Set(props.defaultCheckedKeys))
+
+function isChecked(node: TreeNode): boolean {
+  return checkedKeysRefs.value.has(node.key)
+}
+
+function isDisabled(node: TreeNode): boolean {
+  return !!node.disabled 
+}
+
+const indeterminateRefs = ref()
+function isIndeterminate(node: TreeNode): boolean {
+  return node.children && node.children.some(child => isIndeterminate(child))
+}
 </script>

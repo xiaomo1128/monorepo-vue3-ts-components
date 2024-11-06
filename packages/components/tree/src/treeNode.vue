@@ -9,6 +9,10 @@
                     <Loading v-else></Loading>
                 </ZIcon>
             </span>
+
+            <!-- 多选框 -->
+            <z-checkbox v-if="showCheckbox" :model-value="checked" :disabled="disabled" :indeterminate="indeterminate"></z-checkbox>
+
             <span @click="handleSelected" :class="bem.e('label')">
                 <ZTreeNodeContent :node="node"></ZTreeNodeContent>
             </span>
@@ -18,12 +22,13 @@
 
 <script setup lang="ts">
 import { createNamespace } from '@zi-shui/utils/create';
-import { TreeNode, treeInjectKey, treeNodeEmits, treeNodeProps } from './tree';
+import { TreeNode, treeNodeEmits, treeNodeProps } from './tree';
 import Switcher from './icon/Switcher';
 import Loading from './icon/Loading';
 import ZIcon from '@zi-shui/components/icon';
-import { computed, inject } from 'vue';
+import { computed } from 'vue';
 import ZTreeNodeContent from './tree-node-content';
+import ZCheckbox from '@zi-shui/components/checkbox';
 
 const bem = createNamespace('tree-node')
 
