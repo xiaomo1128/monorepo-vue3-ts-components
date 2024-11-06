@@ -107,6 +107,13 @@ function handleLoad(node: TreeOption) {
 }
 
 const value = ref<Key[]>([])
+
+const check = ref(true)
+
+const handleChange = (val: boolean) => {
+  console.log(val)
+
+}
 </script>
 
 <template>
@@ -130,6 +137,8 @@ const value = ref<Key[]>([])
     </template>
   </z-tree>
   <!-- <z-tree :data="data" label-field="label" key-field="key" children-field="children"></z-tree> -->
+  {{ check }}
+  <z-checkbox v-model="check" :disabled="false" :indeterminate="true" :label="'节点'" @change="handleChange"> 
+    节点2
+  </z-checkbox>
 </template>
-
-<style scoped></style>

@@ -12,10 +12,12 @@ import App from './App.vue'
 import Icon from '@zi-shui/components/icon'
 import '@zi-shui/theme-chalk/src/index.scss'
 import Tree from '@zi-shui/components/tree/index'
+import Checkbox from '@zi-shui/components/checkbox/index'
 
 const plugins = [
     Icon,
-    Tree
+    Tree,
+    Checkbox
 ]
 const app = createApp(App)
 
