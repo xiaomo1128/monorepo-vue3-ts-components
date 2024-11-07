@@ -114,6 +114,11 @@ const handleChange = (val: boolean) => {
   console.log(val)
 
 }
+
+const handleClick = () => {
+  console.log('button click');
+  
+}
 </script>
 
 <template>
@@ -142,4 +147,13 @@ const handleChange = (val: boolean) => {
   <z-checkbox v-model="check" :disabled="false" :indeterminate="true" :label="'节点'" @change="handleChange">
     节点2
   </z-checkbox>
+
+  <z-button @click="handleClick" @mousedown="handleClick" size="large" type="danger" :round="true" :loading="false" icon-placement="left">
+    按钮
+    <template #icon>
+      <z-icon>
+        <AddCircle></AddCircle>
+      </z-icon>
+    </template>
+  </z-button>
 </template>

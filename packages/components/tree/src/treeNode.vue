@@ -24,8 +24,8 @@
 <script setup lang="ts">
 import { createNamespace } from '@zi-shui/utils/create';
 import { TreeNode, treeNodeEmits, treeNodeProps } from './tree';
-import Switcher from './icon/Switcher';
-import Loading from './icon/Loading';
+import Switcher from '@zi-shui/components/internal-icon/Switcher';
+import Loading from '@zi-shui/components/internal-icon/Loading';
 import ZIcon from '@zi-shui/components/icon';
 import { computed } from 'vue';
 import ZTreeNodeContent from './tree-node-content';

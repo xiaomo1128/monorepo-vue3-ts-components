@@ -13,17 +13,14 @@ import Icon from '@zi-shui/components/icon'
 import '@zi-shui/theme-chalk/src/index.scss'
 import Tree from '@zi-shui/components/tree/index'
 import Checkbox from '@zi-shui/components/checkbox/index'
+import Button from '@zi-shui/components/button/index'
 
-const plugins = [
-    Icon,
-    Tree,
-    Checkbox
-]
+const plugins = [Icon, Tree, Checkbox, Button]
 const app = createApp(App)
 
 // 注册为全局组件，可直接使用
 plugins.forEach(plugin => {
-    app.use(plugin)
+  app.use(plugin)
 })
 
 app.mount('#app')
