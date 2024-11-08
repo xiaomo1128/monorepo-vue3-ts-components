@@ -18,7 +18,7 @@ module.exports = {
   plugins: ["vue", "@typescript-eslint"],
   rules: {
     "vue/html-self-closing": "off",
-    "vue/singleline-html-element-content-newline": "off",
+    // "vue/singleline-html-element-content-newline": "off",
     "vue/multi-word-component-names": "off",
     "vue/prefer-import-from-vue": "off",
     "vue/attribute-hyphenation": "off",

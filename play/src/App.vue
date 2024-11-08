@@ -8,7 +8,7 @@
 -->
 <script setup lang="ts">
 import { AddCircle } from '@vicons/ionicons5'
-import { Key, TreeOption } from '@zi-shui/components/tree';
+import { Key, TreeOption } from '@zi-shui/components/tree'
 import { ref } from 'vue'
 // import Icon from '@zi-shui/components/icon/src/icon.vue'
 
@@ -93,16 +93,17 @@ const data = ref(createData())
 
 function handleLoad(node: TreeOption) {
   // 异步加载子节点
-  return new Promise<TreeOption[]>((resolve) => {
+  return new Promise<TreeOption[]>(resolve => {
     setTimeout(() => {
-      resolve([ // 当前展开node的children属性 
+      resolve([
+        // 当前展开node的children属性
         {
           label: nextLabel(node.label),
           key: node.key + nextLabel(node.label),
-          isLeaf: false, // 动态加载子节点
+          isLeaf: false // 动态加载子节点
         }
       ])
-    }, 1000);
+    }, 1000)
   })
 }
 
@@ -112,12 +113,20 @@ const check = ref(true)
 
 const handleChange = (val: boolean) => {
   console.log(val)
-
 }
 
 const handleClick = () => {
-  console.log('button click');
+  console.log('button click')
+}
 
+const username = ref('hello')
+
+const handleBlur = (e: FocusEvent) => {
+  console.log('blur', (e.target as HTMLInputElement).value)
+}
+
+const handleFocus = (e: FocusEvent) => {
+  console.log('focus', (e.target as HTMLInputElement).value)
 }
 </script>
 
@@ -136,20 +145,37 @@ const handleClick = () => {
     selected-keys 选中的节点的key值
   -->
   {{ value }}
-  <z-tree :data="data" :on-load="handleLoad" v-model:selected-keys="value" selectable :show-checkbox="true"
-    :default-checked-keys="['40', '41']">
-    <template #default="{ node }">
-      {{ node.key }} - {{ node.label }}
-    </template>
+  <z-tree
+    :data="data"
+    :on-load="handleLoad"
+    v-model:selected-keys="value"
+    selectable
+    :show-checkbox="true"
+    :default-checked-keys="['40', '41']"
+  >
+    <template #default="{ node }"> {{ node.key }} - {{ node.label }} </template>
   </z-tree>
   <!-- <z-tree :data="data" label-field="label" key-field="key" children-field="children"></z-tree> -->
   {{ check }}
-  <z-checkbox v-model="check" :disabled="false" :indeterminate="true" :label="'节点'" @change="handleChange">
+  <z-checkbox
+    v-model="check"
+    :disabled="false"
+    :indeterminate="true"
+    :label="'节点'"
+    @change="handleChange"
+  >
     节点2
   </z-checkbox>
 
-  <z-button @click="handleClick" @mousedown="handleClick" size="large" type="danger" :round="true" :loading="false"
-    icon-placement="left">
+  <z-button
+    @click="handleClick"
+    @mousedown="handleClick"
+    size="large"
+    type="danger"
+    :round="true"
+    :loading="false"
+    icon-placement="left"
+  >
     按钮
     <template #icon>
       <z-icon>
@@ -158,7 +184,15 @@ const handleClick = () => {
     </template>
   </z-button>
 
-  <z-input>
+  {{ username }}
+  <z-input
+    v-model="username"
+    @blur="handleBlur"
+    @focus="handleFocus"
+    :placeholder="'请输入用户名'"
+    :show-password="true"
+    :clearable="true"
+  >
     <template #prepend>aaa</template>
     <template #prefixIcon>
       <!-- bbb -->
@@ -168,10 +202,9 @@ const handleClick = () => {
     </template>
 
     <template #suffixIcon>
-      <!-- ccc -->
-      <z-icon>
+      <!-- <z-icon>
         <AddCircle></AddCircle>
-      </z-icon>
+      </z-icon> -->
     </template>
 
     <template #append>ddd</template>
