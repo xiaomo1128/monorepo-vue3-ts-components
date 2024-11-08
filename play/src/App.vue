@@ -117,7 +117,7 @@ const handleChange = (val: boolean) => {
 
 const handleClick = () => {
   console.log('button click');
-  
+
 }
 </script>
 
@@ -148,7 +148,8 @@ const handleClick = () => {
     节点2
   </z-checkbox>
 
-  <z-button @click="handleClick" @mousedown="handleClick" size="large" type="danger" :round="true" :loading="false" icon-placement="left">
+  <z-button @click="handleClick" @mousedown="handleClick" size="large" type="danger" :round="true" :loading="false"
+    icon-placement="left">
     按钮
     <template #icon>
       <z-icon>
@@ -156,4 +157,23 @@ const handleClick = () => {
       </z-icon>
     </template>
   </z-button>
+
+  <z-input>
+    <template #prepend>aaa</template>
+    <template #prefixIcon>
+      <!-- bbb -->
+      <z-icon>
+        <AddCircle></AddCircle>
+      </z-icon>
+    </template>
+
+    <template #suffixIcon>
+      <!-- ccc -->
+      <z-icon>
+        <AddCircle></AddCircle>
+      </z-icon>
+    </template>
+
+    <template #append>ddd</template>
+  </z-input>
 </template>
