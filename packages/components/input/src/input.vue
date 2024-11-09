@@ -46,6 +46,7 @@
 import { createNamespace } from '@zi-shui/utils/create'
 import {
   computed,
+  inject,
   nextTick,
   onMounted,
   ref,
@@ -54,11 +55,13 @@ import {
   watch
 } from 'vue'
 import { inputEmits, inputProps } from './input'
+import { formItemContextKey } from '../../form/src/form-item'
 
 defineOptions({
   name: 'z-input',
   inheritAttrs: false
 })
+const formItemContext = inject(formItemContextKey) // 注入formItem的上下文
 const bem = createNamespace('input')
 const props = defineProps(inputProps)
 const emit = defineEmits(inputEmits)
@@ -70,6 +73,7 @@ const slots = useSlots()
 watch(
   () => props.modelValue,
   () => {
+    formItemContext?.validate('change') // 更新formItem的状态
     setNativeInputValue()
   }
 )
@@ -124,6 +128,7 @@ const handleChange = (e: Event) => {
 }
 
 const handleBlur = (e: FocusEvent) => {
+  formItemContext?.validate('blur')
   emit('blur', e)
 }
 const handleFocus = (e: FocusEvent) => {

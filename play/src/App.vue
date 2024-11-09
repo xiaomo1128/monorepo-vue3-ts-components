@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { AddCircle } from '@vicons/ionicons5'
 import { Key, TreeOption } from '@zi-shui/components/tree'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 // import Icon from '@zi-shui/components/icon/src/icon.vue'
 
 // console.log(Icon);
@@ -128,85 +128,124 @@ const handleBlur = (e: FocusEvent) => {
 const handleFocus = (e: FocusEvent) => {
   console.log('focus', (e.target as HTMLInputElement).value)
 }
+
+const state = reactive({
+  username: 'xiaomo1128',
+  passward: '123456'
+})
 </script>
 
 <template>
-  <z-icon :color="'red'" :size="20">
-    <AddCircle></AddCircle>
-  </z-icon>
+  <div>
+    <z-icon :color="'red'" :size="20">
+      <AddCircle></AddCircle>
+    </z-icon>
 
-  <z-icon :color="'blue'" :size="20">
-    <AddCircle></AddCircle>
-  </z-icon>
+    <z-icon :color="'blue'" :size="20">
+      <AddCircle></AddCircle>
+    </z-icon>
 
-  <!-- 传递一个树形结构 
-    selectable 节点是否可选
-    multiple 节点是否可多选
-    selected-keys 选中的节点的key值
-  -->
-  {{ value }}
-  <z-tree
-    :data="data"
-    :on-load="handleLoad"
-    v-model:selected-keys="value"
-    selectable
-    :show-checkbox="true"
-    :default-checked-keys="['40', '41']"
-  >
-    <template #default="{ node }"> {{ node.key }} - {{ node.label }} </template>
-  </z-tree>
-  <!-- <z-tree :data="data" label-field="label" key-field="key" children-field="children"></z-tree> -->
-  {{ check }}
-  <z-checkbox
-    v-model="check"
-    :disabled="false"
-    :indeterminate="true"
-    :label="'节点'"
-    @change="handleChange"
-  >
-    节点2
-  </z-checkbox>
+    <!-- 传递一个树形结构 
+      selectable 节点是否可选
+      multiple 节点是否可多选
+      selected-keys 选中的节点的key值
+    -->
+    {{ value }}
+    <z-tree
+      :data="data"
+      :on-load="handleLoad"
+      v-model:selected-keys="value"
+      selectable
+      :show-checkbox="true"
+      :default-checked-keys="['40', '41']"
+    >
+      <template #default="{ node }">
+        {{ node.key }} - {{ node.label }}
+      </template>
+    </z-tree>
+    <!-- <z-tree :data="data" label-field="label" key-field="key" children-field="children"></z-tree> -->
+    <hr />
 
-  <z-button
-    @click="handleClick"
-    @mousedown="handleClick"
-    size="large"
-    type="danger"
-    :round="true"
-    :loading="false"
-    icon-placement="left"
-  >
-    按钮
-    <template #icon>
-      <z-icon>
-        <AddCircle></AddCircle>
-      </z-icon>
-    </template>
-  </z-button>
+    {{ check }}
+    <z-checkbox
+      v-model="check"
+      :disabled="false"
+      :indeterminate="true"
+      :label="'节点'"
+      @change="handleChange"
+    >
+      节点2
+    </z-checkbox>
+    <hr />
+    <z-button
+      @click="handleClick"
+      @mousedown="handleClick"
+      size="large"
+      type="danger"
+      :round="true"
+      :loading="false"
+      icon-placement="left"
+    >
+      按钮
+      <template #icon>
+        <z-icon>
+          <AddCircle></AddCircle>
+        </z-icon>
+      </template>
+    </z-button>
+    <hr />
+    {{ username }}
+    <z-input
+      v-model="username"
+      @blur="handleBlur"
+      @focus="handleFocus"
+      :placeholder="'请输入用户名'"
+      :show-password="true"
+      :clearable="true"
+    >
+      <template #prepend>aaa</template>
+      <template #prefixIcon>
+        <!-- bbb -->
+        <z-icon>
+          <AddCircle></AddCircle>
+        </z-icon>
+      </template>
 
-  {{ username }}
-  <z-input
-    v-model="username"
-    @blur="handleBlur"
-    @focus="handleFocus"
-    :placeholder="'请输入用户名'"
-    :show-password="true"
-    :clearable="true"
-  >
-    <template #prepend>aaa</template>
-    <template #prefixIcon>
-      <!-- bbb -->
-      <z-icon>
-        <AddCircle></AddCircle>
-      </z-icon>
-    </template>
+      <template #suffixIcon>
+        <!-- <z-icon>
+          <AddCircle></AddCircle>
+        </z-icon> -->
+      </template>
 
-    <template #suffixIcon>
-      <!-- <z-icon>
-        <AddCircle></AddCircle>
-      </z-icon> -->
-    </template>
+      <template #append>ddd</template>
+    </z-input>
 
-    <template #append>ddd</template>
-  </z-input>
+    <hr />
+    <z-form-item
+      prop="username"
+      label="用户名"
+      :rules="[
+        {
+          required: true,
+          message: '请输入用户名',
+          trigger: 'blur'
+        },
+        {
+          min: 6,
+          max: 10,
+          message: '用户名6-10位',
+          trigger: ['change', 'blur']
+        }
+      ]"
+    >
+      <z-input
+        placeholder="请输入用户名"
+        :show-password="true"
+        :clearable="true"
+        v-model="state.username"
+      ></z-input>
+
+      <template #label>用户名</template>
+    </z-form-item>
+  </div>
 </template>

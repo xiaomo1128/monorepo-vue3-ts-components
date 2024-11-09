@@ -15,8 +15,9 @@ import Tree from '@zi-shui/components/tree/index'
 import Checkbox from '@zi-shui/components/checkbox/index'
 import Button from '@zi-shui/components/button/index'
 import Input from '@zi-shui/components/input/index'
+import { FormItem } from '@zi-shui/components/form/index'
 
-const plugins = [Icon, Tree, Checkbox, Button, Input]
+const plugins = [Icon, Tree, Checkbox, Button, Input, FormItem]
 const app = createApp(App)
 
 // 注册为全局组件，可直接使用

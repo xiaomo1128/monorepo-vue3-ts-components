@@ -17,6 +17,9 @@ importers:
       '@zi-shui/utils':
         specifier: workspace:*
         version: link:packages/utils
+      async-validator:
+        specifier: ^4.2.5
+        version: 4.2.5
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -1828,6 +1831,10 @@ packages:
       '@babel/parser': 7.25.8
       ast-kit: 1.3.0
     dev: true
+
+  /async-validator@4.2.5:
+    resolution: {integrity: sha512-7HhHjtERjqlNbZtqNqy2rckN/SpOOlmDliet+lP7k+eKZEjPk3DgyeU9lIXLdeLz0uBbbVp+9Qdow9wJWgwwfg==}
+    dev: false
 
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
