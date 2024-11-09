@@ -8,6 +8,7 @@
 -->
 <script setup lang="ts">
 import { AddCircle } from '@vicons/ionicons5'
+import { FormInstance } from '@zi-shui/components/form'
 import { Key, TreeOption } from '@zi-shui/components/tree'
 import { reactive, ref } from 'vue'
 // import Icon from '@zi-shui/components/icon/src/icon.vue'
@@ -133,6 +134,15 @@ const state = reactive({
   username: 'xiaomo1128',
   passward: '123456'
 })
+
+const formRef = ref<FormInstance>()
+
+const validateForm = () => {
+  const form = formRef.value
+  form?.validate().then((valid, errors) => {
+    console.log(valid, errors)
+  })
+}
 </script>
 
 <template>
@@ -221,31 +231,59 @@ const state = reactive({
     </z-input>
 
     <hr />
-    <z-form-item
-      prop="username"
-      label="用户名"
-      :rules="[
-        {
-          required: true,
-          message: '请输入用户名',
-          trigger: 'blur'
-        },
-        {
+    <z-form
+      ref="formRef"
+      :model="state"
+      :rules="{
+        username: {
           min: 6,
           max: 10,
           message: '用户名6-10位',
           trigger: ['change', 'blur']
         }
-      ]"
+      }"
     >
-      <z-input
-        placeholder="请输入用户名"
-        :show-password="true"
-        :clearable="true"
-        v-model="state.username"
-      ></z-input>
+      <z-form-item
+        prop="username"
+        label="用户名"
+        :rules="[
+          {
+            required: true,
+            message: '请输入用户名',
+            trigger: 'blur'
+          }
+        ]"
+      >
+        <z-input
+          placeholder="请输入用户名"
+          :clearable="true"
+          v-model="state.username"
+        ></z-input>
 
-      <template #label>用户名</template>
-    </z-form-item>
+        <template #label>用户名</template>
+      </z-form-item>
+
+      <z-form-item
+        prop="passward"
+        label="密码"
+        :rules="[
+          {
+            required: true,
+            message: '请输入密码',
+            trigger: 'blur'
+          }
+        ]"
+      >
+        <z-input
+          placeholder="请输入密码"
+          :show-password="true"
+          :clearable="true"
+          v-model="state.passward"
+        ></z-input>
+
+        <template #label>用户名</template>
+      </z-form-item>
+      <z-button @click="validateForm"> 按钮</z-button>
+    </z-form>
   </div>
 </template>

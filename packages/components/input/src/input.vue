@@ -73,7 +73,7 @@ const slots = useSlots()
 watch(
   () => props.modelValue,
   () => {
-    formItemContext?.validate('change') // 更新formItem的状态
+    formItemContext?.validate('change').catch(() => {}) // 更新formItem的状态
     setNativeInputValue()
   }
 )
@@ -128,7 +128,7 @@ const handleChange = (e: Event) => {
 }
 
 const handleBlur = (e: FocusEvent) => {
-  formItemContext?.validate('blur')
+  formItemContext?.validate('blur').catch(() => {}) // 更新formItem的状态
   emit('blur', e)
 }
 const handleFocus = (e: FocusEvent) => {
