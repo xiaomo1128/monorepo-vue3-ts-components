@@ -1,7 +1,7 @@
 import { PropType, ExtractPropTypes } from 'vue'
 
 export interface UploadFile {
-  uid?: string
+  uid?: number
   name: string
   url?: string
   percentage?: number
@@ -45,6 +45,10 @@ export const baseProps = {
   data: {
     type: Object,
     default: () => ({})
+  },
+  drag: {
+    type: Boolean,
+    default: false
   }
 } as const
 
@@ -70,7 +74,7 @@ export const uploadProps = {
   },
   beforeRemove: {
     type: Function as PropType<
-      (file: UploadFile, uploadFiles: UploadFiles) => void
+      (file: UploadFile, uploadFiles: UploadFiles) => Promise<boolean> | boolean
     >,
     default: NOOP
   },
@@ -81,7 +85,13 @@ export const uploadProps = {
     default: NOOP
   },
   onProgress: {
-    type: Function as PropType<(file: UploadFile) => void>,
+    type: Function as PropType<
+      (
+        file: UploadProgressEvent,
+        uploadFile: UploadFile,
+        uploadFiles: UploadFiles
+      ) => void
+    >,
     default: NOOP
   },
   onSuccess: {

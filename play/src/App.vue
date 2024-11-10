@@ -146,9 +146,8 @@ const validateForm = () => {
 }
 
 const handleBeforeUpload = (rawFile: UploadRawFile) => {
-  console.log('before upload');
-  
-  return false
+  // return false
+  return true
 }
 </script>
 
@@ -293,7 +292,12 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
       <z-button @click="validateForm"> 按钮</z-button>
     </z-form>
     <hr />
-    <z-upload multiple :before-upload="handleBeforeUpload">
+    <z-upload
+      multiple
+      :before-upload="handleBeforeUpload"
+      action="http://localhost:4000/upload"
+      drag
+    >
       <z-button>上传文件</z-button>
     </z-upload>
   </div>

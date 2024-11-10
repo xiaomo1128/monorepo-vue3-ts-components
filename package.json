@@ -15,6 +15,9 @@
     "@zi-shui/theme-chalk": "workspace:*",
     "@zi-shui/utils": "workspace:*",
     "async-validator": "^4.2.5",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "multer": "1.4.5-lts.1",
     "typescript": "^5.6.3",
     "vue": "^3.5.12"
   },
