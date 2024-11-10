@@ -99,3 +99,6 @@ export const uploadProps = {
 } as const
 
 export type UploadProps = ExtractPropTypes<typeof uploadProps>
+
+let id = 0
+export const genId = () => id++

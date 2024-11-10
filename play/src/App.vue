@@ -10,6 +10,7 @@
 import { AddCircle } from '@vicons/ionicons5'
 import { FormInstance } from '@zi-shui/components/form'
 import { Key, TreeOption } from '@zi-shui/components/tree'
+import { UploadRawFile } from '@zi-shui/components/upload'
 import { reactive, ref } from 'vue'
 // import Icon from '@zi-shui/components/icon/src/icon.vue'
 
@@ -142,6 +143,12 @@ const validateForm = () => {
   form?.validate().then((valid, errors) => {
     console.log(valid, errors)
   })
+}
+
+const handleBeforeUpload = (rawFile: UploadRawFile) => {
+  console.log('before upload');
+  
+  return false
 }
 </script>
 
@@ -286,6 +293,8 @@ const validateForm = () => {
       <z-button @click="validateForm"> 按钮</z-button>
     </z-form>
     <hr />
-    <z-upload></z-upload>
+    <z-upload multiple :before-upload="handleBeforeUpload">
+      <z-button>上传文件</z-button>
+    </z-upload>
   </div>
 </template>
