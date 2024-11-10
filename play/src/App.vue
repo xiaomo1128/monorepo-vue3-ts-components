@@ -285,5 +285,7 @@ const validateForm = () => {
       </z-form-item>
       <z-button @click="validateForm"> 按钮</z-button>
     </z-form>
+    <hr />
+    <z-upload></z-upload>
   </div>
 </template>
