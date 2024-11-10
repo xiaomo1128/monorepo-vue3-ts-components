@@ -17,8 +17,19 @@ import Button from '@zi-shui/components/button/index'
 import Input from '@zi-shui/components/input/index'
 import { FormItem, Form } from '@zi-shui/components/form/index'
 import Upload from '@zi-shui/components/upload/index'
+import Calendar from '@zi-shui/components/calendar/index'
 
-const plugins = [Icon, Tree, Checkbox, Button, Input, FormItem, Form, Upload]
+const plugins = [
+  Icon,
+  Tree,
+  Checkbox,
+  Button,
+  Input,
+  FormItem,
+  Form,
+  Upload,
+  Calendar
+]
 const app = createApp(App)
 
 // 注册为全局组件，可直接使用

@@ -300,5 +300,8 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
     >
       <z-button>上传文件</z-button>
     </z-upload>
+
+    <hr />
+    <z-calendar></z-calendar>
   </div>
 </template>
