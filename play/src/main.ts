@@ -18,6 +18,7 @@ import Input from '@zi-shui/components/input/index'
 import { FormItem, Form } from '@zi-shui/components/form/index'
 import Upload from '@zi-shui/components/upload/index'
 import Calendar from '@zi-shui/components/calendar/index'
+import VirtualScrollList from '@zi-shui/components/virtual-scroll-list'
 
 const plugins = [
   Icon,
@@ -28,7 +29,8 @@ const plugins = [
   FormItem,
   Form,
   Upload,
-  Calendar
+  Calendar,
+  VirtualScrollList
 ]
 const app = createApp(App)
 

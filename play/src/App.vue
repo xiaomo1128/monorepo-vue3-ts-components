@@ -10,8 +10,9 @@
 import { AddCircle } from '@vicons/ionicons5'
 import { FormInstance } from '@zi-shui/components/form'
 import { Key, TreeOption } from '@zi-shui/components/tree'
-import { UploadRawFile } from '@zi-shui/components/upload'
-import { reactive, ref } from 'vue'
+import { DefineComponent, reactive, ref } from 'vue'
+import { Random } from 'mockjs'
+import Item from './Item.vue'
 // import Icon from '@zi-shui/components/icon/src/icon.vue'
 
 // console.log(Icon);
@@ -145,16 +146,40 @@ const validateForm = () => {
   })
 }
 
-const handleBeforeUpload = (rawFile: UploadRawFile) => {
+const handleBeforeUpload = () => {
   // return false
   return true
 }
 
 const currentDate = ref(new Date())
+
+const totalCount = 10000
+interface DataType {
+  id: number | string
+  name: string
+  desc: string
+  index: number
+}
+
+const listData: Array<DataType> = []
+let index = 0
+function listFun() {
+  while (index++ !== totalCount) {
+    listData.push({
+      id: index,
+      name: Random.name(),
+      desc: Random.csentence(20, 120),
+      index
+    })
+  }
+}
+listFun()
+const items = ref(listData)
+console.log(items.value)
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <z-icon :color="'red'" :size="20">
       <AddCircle></AddCircle>
     </z-icon>
@@ -313,5 +338,27 @@ const currentDate = ref(new Date())
         </p>
       </template>
     </z-calendar>
+
+    <hr />
+    <z-virtual-scroll-list
+      class="virtual-list"
+      :data-sources="items"
+      data-key="id"
+      :keeps="30"
+      :estimate-size="80"
+      :dataComponent="Item as DefineComponent<{},{},any>"
+    ></z-virtual-scroll-list>
   </div>
 </template>
+
+<style lang="scss">
+.container {
+  padding-bottom: 50px;
+}
+.virtual-list {
+  width: 100%;
+  height: 300px;
+  overflow-y: scroll;
+  border: 3px solid #ccc;
+}
+</style>
