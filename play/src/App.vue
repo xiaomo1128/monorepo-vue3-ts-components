@@ -149,6 +149,8 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
   // return false
   return true
 }
+
+const currentDate = ref(new Date())
 </script>
 
 <template>
@@ -302,6 +304,14 @@ const handleBeforeUpload = (rawFile: UploadRawFile) => {
     </z-upload>
 
     <hr />
-    <z-calendar></z-calendar>
+    {{ currentDate }}
+    <z-calendar v-model="currentDate">
+      <template #date-cell="{ data }">
+        <p :class="data.isSelected ? 'is-selected' : ''">
+          {{ data.day.split('-').slice(1).join('-') }}
+          {{ data.isSelected ? '✔️' : '' }}
+        </p>
+      </template>
+    </z-calendar>
   </div>
 </template>
