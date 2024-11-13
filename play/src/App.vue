@@ -153,7 +153,7 @@ const handleBeforeUpload = () => {
 
 const currentDate = ref(new Date())
 
-const totalCount = 10000
+const totalCount = 100
 interface DataType {
   id: number | string
   name: string

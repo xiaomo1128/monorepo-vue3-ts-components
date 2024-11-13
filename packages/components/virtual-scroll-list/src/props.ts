@@ -41,3 +41,18 @@ export type VirtualOptions = {
 }
 
 export type updateType = (range: RangeOptions) => void
+
+export const virtualItemProps = {
+  uniqueKey: {
+    type: [String, Number] as PropType<string | number>
+  },
+  source: {
+    type: Object,
+    required: true
+  },
+  component: {
+    type: [Object, Function] as PropType<DefineComponent<{}, {}, any>>
+  }
+} as const
+
+export type VirtualItemProps = ExtractPropTypes<typeof virtualItemProps>

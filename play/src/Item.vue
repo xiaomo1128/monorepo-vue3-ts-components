@@ -1,10 +1,10 @@
 <template>
-  <div class="item" style="height: 80px;">
+  <div class="item"  :data-index="source.index">
     <div class="head">
       <span>{{ source.index }}</span>
       <span>{{ source.name }}</span>
     </div>
-    <div class="body">
+    <div class="body" style="font-size: 18px">
       <span>{{ source.desc }}</span>
     </div>
   </div>

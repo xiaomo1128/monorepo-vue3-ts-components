@@ -1,6 +1,7 @@
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { RangeOptions, updateType, virtualProps } from './props'
 import { initVirtual } from './virtual'
+import VirtualItem from './virtual-item'
 
 export default defineComponent({
   name: 'z-virtual-scroll-list',
@@ -43,11 +44,28 @@ export default defineComponent({
         const uniqueKey = (dataSource as any)[dataKey]
         if (dataSource) {
           slots.push(
-            <dataComponent key={uniqueKey} source={dataSource}></dataComponent>
+            <VirtualItem
+              uniqueKey={uniqueKey}
+              source={dataSource}
+              component={dataComponent}
+              onItemResize={onItemResize}
+            ></VirtualItem>
           )
         }
       }
       return slots
+    }
+
+    function onItemResize(id: string | number, size: number) {
+      virtual.saveSize(id, size)
+    }
+
+    const root = ref<HTMLElement | null>(null)
+    function onScroll() {
+      if (root.value) {
+        const offset = root.value.scrollTop
+        virtual.handleScroll(offset)
+      }
     }
 
     return () => {
@@ -56,7 +74,7 @@ export default defineComponent({
         padding: `${padFront}px 0 ${padBehind}px `
       }
       return (
-        <div class="">
+        <div class="" onScroll={onScroll} ref={root}>
           <div style={paddingStyle}>{genRenderComponent()}</div>
         </div>
       )
